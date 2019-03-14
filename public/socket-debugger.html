@@ -1,0 +1,32 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Socket Debugger</title>
+    <link rel="stylesheet" href="/css/socket-debugger.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.9/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Socket Debugger</h1>
+        <p>Connected: {{connected}}</p>
+        <h2>Emit</h2>
+        <h3>Event:
+            <select v-model="emitData.event">
+                <option v-for="option in emitData.events">{{option}}</option>
+            </select>
+        </h3>
+        <p>Message: <textarea v-model="emitData.message" rows="5" cols="30"></textarea></p>
+        <p><button class="btn" @click="emit()" :disabled="!emitData.event || !emitData.message">Send</button></p>
+        <h2>Listen</h2>
+        <h3>Event: {{listenData.event}}</h3>
+        <p>{{JSON.stringify(listenData.message)}}</p>
+    </div>
+    <script src="/js/socket-debugger.js"></script>
+</body>
+
+</html>

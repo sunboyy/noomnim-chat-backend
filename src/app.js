@@ -1,16 +1,13 @@
 import express from 'express'
-import socketIO from 'socket.io'
 import { Server } from 'http'
 import { port } from './config'
+import { initSocket } from './socket-handler'
 
 const app = express()
+app.use(express.static('public'))
 const http = Server(app)
-const io = socketIO(http)
+initSocket(http)
 
-io.on('connection', socket => {
-    console.log('Connected')
-})
-
-app.listen(port, () => {
-    console.log('Noomnim Chat server started at port ' + port)
+http.listen(port, () => {
+    console.log('Noomnim Chat Server started at port ' + port)
 })
