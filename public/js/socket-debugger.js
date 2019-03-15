@@ -1,11 +1,12 @@
+const events = ['greet', 'create-client']
 const vm = new Vue({
     el: '#app',
     data: {
         connected: false,
         emitData: {
-            event: '',
+            event: 'greet',
             message: '',
-            events: ['', 'greet']
+            events: events
         },
         listenData: {
             event: '',
@@ -22,10 +23,11 @@ const socket = io()
 socket.on('connect', () => {
     vm.connected = true
 })
-const events = ['greet']
+socket.on('disconnect', () => {
+    vm.connected = false
+})
 events.forEach(event => {
     socket.on(event, msg => {
-        console.log('yay')
         vm.listenData.event = event
         vm.listenData.message = msg
     })

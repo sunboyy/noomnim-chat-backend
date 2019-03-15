@@ -20,7 +20,9 @@
                 <option v-for="option in emitData.events">{{option}}</option>
             </select>
         </h3>
-        <p>Message: <textarea v-model="emitData.message" rows="5" cols="30"></textarea></p>
+        <label>Message:
+            <textarea class="emit-message" v-model="emitData.message" rows="5" cols="30"></textarea>
+        </label>
         <p><button class="btn" @click="emit()" :disabled="!emitData.event || !emitData.message">Send</button></p>
         <h2>Listen</h2>
         <h3>Event: {{listenData.event}}</h3>
