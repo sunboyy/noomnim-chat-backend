@@ -1,4 +1,4 @@
-import { getConnection } from './database';
+import { getConnection } from './database'
 
 export function getAllGroup() {
     return new Promise(async (resolve, reject) => {

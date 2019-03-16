@@ -24,7 +24,7 @@ CREATE TABLE `message` (
 CREATE TABLE `member` (
     `client_id` INT UNSIGNED NOT NULL,
     `group_id` INT UNSIGNED NOT NULL,
-    `last_msg_id` INT UNSIGNED NOT NULL,
+    `last_msg_id` INT UNSIGNED,
     CONSTRAINT `pk_clientGroup` PRIMARY KEY (`client_id`, `group_id`),
     FOREIGN KEY (`client_id`) REFERENCES `client`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`group_id`) REFERENCES `group`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
