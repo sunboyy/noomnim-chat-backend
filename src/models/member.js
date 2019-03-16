@@ -10,3 +10,14 @@ export function getMembership(clientId) {
         })
     })
 }
+
+export function checkMembership(clientId, groupId) {
+    return new Promise(async (resolve, reject) => {
+        const conn = await getConnection()
+        conn.query('SELECT * FROM `member` WHERE `client_id` = ? AND `group_id` = ?', [clientId, groupId], (err, rows) => {
+            if (err) reject('Cannot check membership')
+            else resolve(rows.length > 0)
+            conn.release()
+        })
+    })
+}
