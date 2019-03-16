@@ -38,7 +38,6 @@ export function initSocket(http) {
                     await addMembership(clientId, groupId)
                 }
                 socket.join('group/' + groupId)
-                pushToGroup(groupId, name + ' joined the group!')
             } catch (e) {
                 console.error(e)
             }

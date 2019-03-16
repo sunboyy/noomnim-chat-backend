@@ -25,19 +25,10 @@ export function checkMembership(clientId, groupId) {
 export function addMembership(clientId, groupId) {
     return new Promise(async (resolve, reject) => {
         const conn = await getConnection()
-        let hasGroup = false
-        conn.query('SELECT * FROM `group` WHERE `id`=?', [groupId], (err, rows) => {
-            if(err) reject('Error')
-            else if(rows.length == 0) reject('Group does not exists!')
-            else hasGroup = true
+        conn.query('INSERT INTO `member` (`client_id`,`group_id`,`last_msg_id` VALUES (?,?,NULL)', [clientId, groupId], (err, res) => {
+            if(err) reject('Cannot join group')
+            else resolve({ id: res.insertId, name })
         })
-        if(hasGroup) {
-            conn.query('INSERT INTO `member` (`client_id`,`group_id`,`last_msg_id` VALUES (?,?,NULL)', [clientId, groupId], (err, res) => {
-                if(err) reject('Cannot join group')
-                // TODO: 
-                else resolve({ })
-            })
-        }
         conn.release()
     })
 }
