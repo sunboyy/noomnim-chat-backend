@@ -29,3 +29,7 @@ export function initSocket(http) {
         })
     })
 }
+
+export function pushToGroup(groupId, message) {
+    io.to('group/' + groupId).emit('message', { data: message })
+}

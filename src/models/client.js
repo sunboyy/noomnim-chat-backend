@@ -15,7 +15,7 @@ export function getClient(name) {
 export function insertClient(name) {
     return new Promise(async (resolve, reject) => {
         const conn = await getConnection()
-        conn.query('INSERT INTO `client` (`id`, `name`) VALUES (?, ?)', [0, name], (err, res) => {
+        conn.query('INSERT INTO `client` (`name`) VALUES (?)', [name], (err, res) => {
             if (err) reject('Cannot insert client')
             else resolve({ id: res.insertId, name })
             conn.release()
