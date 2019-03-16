@@ -1,6 +1,6 @@
 import socketIO from 'socket.io'
 import { getClient, insertClient } from './models/client'
-import { getMembership } from './models/member'
+import { getMembership, addMembership } from './models/member'
 
 let io
 
@@ -25,6 +25,22 @@ export function initSocket(http) {
                 socket.emit('create-client', { data: { client, groups } })
             } catch (e) {
                 socket.emit('create-client', { error: e })
+            }
+        })
+
+        socket.on('join-group', async (name, groupId) => {
+            try {
+                const client = await getClient(name)
+                if (!client) {
+                    socket.emit('create-client', { error: 'Create client first!' })
+                }
+                if (!checkMembership(clientId, groupId)) {
+                    await addMembership(clientId, groupId)
+                }
+                socket.join('group/' + groupId)
+                pushToGroup(groupId, name + ' joined the group!')
+            } catch (e) {
+                console.error(e)
             }
         })
     })
