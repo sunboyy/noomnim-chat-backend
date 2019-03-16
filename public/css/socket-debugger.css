@@ -23,6 +23,7 @@ body {
     padding: 4px;
     resize: none;
     outline: none;
+    transition-duration: 0.3s;
 }
 .emit-message:focus {
     border-color: #03A9F4;
