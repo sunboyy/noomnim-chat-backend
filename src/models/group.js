@@ -33,3 +33,14 @@ export function insertGroup(name) {
         })
     })
 }
+
+export function leaveGroup(clientId, groupId) {
+    return new Promise(async (resolve, reject) => {
+        const conn = await getConnection()
+        conn.query('DELETE FROM `member` WHERE `client_id` = ? AND `group_id` = ?', [clientId, groupId], (err, res) => {
+            if (err) reject('Cannot leave group')
+            else resolve(res.affectedRows)
+            conn.release()
+        })
+    })
+}
