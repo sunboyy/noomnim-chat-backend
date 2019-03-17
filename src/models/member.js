@@ -21,3 +21,28 @@ export function checkMembership(clientId, groupId) {
         })
     })
 }
+
+function getLastMessageId(clientId, groupId) {
+    return new Promise(async (resolve, reject) => {
+        const conn = await getConnection()
+        conn.query('SELECT * FROM `member` WHERE `client_id` = ? AND `group_id` = ?', [clientId, groupId], async (err, rows) => {
+            if (err) reject('Cannot get last message')
+            else if (rows.length == 0) reject('Client not in the group')
+            else resolve(rows[0].last_msg_id)
+            conn.release()
+        })
+    })
+}
+
+export function updateLastMessage(clientId, groupId, messageId) {
+    return new Promise(async (resolve, reject) => {
+        const lastMsgId = await getLastMessageId(clientId, groupId)
+        if (lastMsgId !== null && lastMsgId >= messageId) return resolve()
+        const conn = await getConnection()
+        conn.query('UPDATE `member` SET `last_msg_id` = ? WHERE `client_id` = ? AND `group_id` = ?', [messageId, clientId, groupId], (err, res) => {
+            if (err) reject('Cannot update last message')
+            else resolve()
+            conn.release()
+        })
+    })
+}
