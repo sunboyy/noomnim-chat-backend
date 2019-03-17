@@ -33,3 +33,22 @@ export function insertGroup(name) {
         })
     })
 }
+
+export function findGroup(keys) {
+    keys = keys.split(" ")
+    let qStr = ""
+    for (var k in keys) {
+        keys[k] = "%" + keys[k] + "%"
+        qStr += ("`name` LIKE ? OR ")
+    }
+    qStr = qStr.substr(0, qStr.length - 4)
+    return new Promise(async (resolve, reject) => {
+        const conn = await getConnection()
+        conn.query('SELECT * FROM `group` WHERE ' + qStr, keys, (err, rows) => {
+            if (err) reject('Cannot get group')
+            else if (rows.length == 0) resolve(null)
+            else resolve(rows)
+            conn.release()
+        })
+    })
+}
