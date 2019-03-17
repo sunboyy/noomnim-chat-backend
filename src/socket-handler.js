@@ -1,6 +1,7 @@
 import socketIO from 'socket.io'
 import { getClient, insertClient } from './models/client'
 import { getMembership } from './models/member'
+import { leaveGroup } from './models/group';
 
 let io
 
@@ -25,6 +26,18 @@ export function initSocket(http) {
                 socket.emit('create-client', { data: { client, groups } })
             } catch (e) {
                 socket.emit('create-client', { error: e })
+            }
+        })
+
+        socket.on('leave-group', async (msg) => {
+            try {
+                var clientId = msg.clientId
+                var groupId = msg.groupId
+                var result = await leaveGroup(clientId,groupId)
+                socket.emit('leave-group',{ data: { result, clientId, groupId } })
+                socket.leave('group/' + groupId)
+            } catch (e){
+                socket.emit('leave-group', { error: e })
             }
         })
     })
