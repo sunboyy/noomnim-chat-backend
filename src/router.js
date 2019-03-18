@@ -44,17 +44,4 @@ router.post('/message', async (req, res) => {
     }
 })
 
-// router.post('/leave', async (req, res) => {
-//     try{
-//         const {clientId, groupId} = req.body;
-//         if (!checkMembership(clientId, groupId)) {
-//             return res.json({ status: 0, error: 'Not a member of the group' })
-//         }
-//         const result = await leavegroup(clientId, groupId)
-//         res.json({ status: 1, data: result})
-//     } catch (e){
-//         res.json({ status: 0, error: e })
-//     }
-// })
-
 export default router

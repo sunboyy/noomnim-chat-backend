@@ -39,7 +39,7 @@ export function leaveGroup(clientId, groupId) {
         const conn = await getConnection()
         conn.query('DELETE FROM `member` WHERE `client_id` = ? AND `group_id` = ?', [clientId, groupId], (err, res) => {
             if (err) reject('Cannot leave group')
-            else resolve(res.affectedRows)
+            else resolve()
             conn.release()
         })
     })
