@@ -19,7 +19,7 @@ router.get('/group', async (req, res) => {
 router.post('/message', async (req, res) => {
     try {
         const { content, clientId, groupId } = req.body
-        if (!checkMembership(clientId, groupId)) {
+        if (!(await checkMembership(clientId, groupId))) {
             return res.json({ status: 0, error: 'Not a member of the group' })
         }
         const message = await insertMessage(content, clientId, groupId)
