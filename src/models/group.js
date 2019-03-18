@@ -35,13 +35,8 @@ export function insertGroup(name) {
 }
 
 export function findGroup(keys) {
-    keys = keys.split(" ")
-    let qStr = ""
-    for (var k in keys) {
-        keys[k] = "%" + keys[k] + "%"
-        qStr += ("`name` LIKE ? OR ")
-    }
-    qStr = qStr.substr(0, qStr.length - 4)
+    keys = keys.split(' ').map(key => '%' + key + '%')
+    const qStr = '`name` LIKE ? OR '.repeat(keys.length).substr(0, qStr.length - 4)
     return new Promise(async (resolve, reject) => {
         const conn = await getConnection()
         conn.query('SELECT * FROM `group` WHERE ' + qStr, keys, (err, rows) => {
