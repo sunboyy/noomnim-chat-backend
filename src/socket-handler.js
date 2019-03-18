@@ -1,7 +1,6 @@
 import socketIO from 'socket.io'
 import { getClient, insertClient } from './models/client'
 import { getMembership, updateLastMessage, getLastMessageId } from './models/member'
-import { getMembership } from './models/member'
 import { leaveGroup } from './models/group'
 import { getUnreadMessage } from './models/message'
 
