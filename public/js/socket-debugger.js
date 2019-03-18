@@ -1,4 +1,4 @@
-const events = ['greet', 'create-client', 'message', 'message-ack']
+const events = ['greet', 'create-client', 'message', 'message-ack', 'get-unread']
 const vm = new Vue({
     el: '#app',
     data: {

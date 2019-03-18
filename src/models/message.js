@@ -24,3 +24,14 @@ export function insertMessage(message, clientId, groupId) {
         })
     })
 }
+
+export function getUnreadMessage(groupId, lastMessgeId) {
+    return new Promise(async (resolve, reject) => {
+        const conn = await getConnection()
+        conn.query('SELECT * FROM `message` WHERE `group_id` = ? AND `id` > ?', [groupId, lastMessgeId], (err, rows) => {
+            if (err) reject(err)
+            else resolve(rows)
+            conn.release()
+        })
+    })
+}

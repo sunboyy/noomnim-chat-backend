@@ -22,7 +22,7 @@ export function checkMembership(clientId, groupId) {
     })
 }
 
-function getLastMessageId(clientId, groupId) {
+export function getLastMessageId(clientId, groupId) {
     return new Promise(async (resolve, reject) => {
         const conn = await getConnection()
         conn.query('SELECT * FROM `member` WHERE `client_id` = ? AND `group_id` = ?', [clientId, groupId], async (err, rows) => {
