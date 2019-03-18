@@ -29,6 +29,12 @@ export function initSocket(http) {
             }
         })
 
+        /**
+         * @event leave-group
+         * @description leave group from client.
+         * @param msg {clientId:int, groupId:int}
+         */
+
         socket.on('leave-group', async (msg) => {
             try {
                 const clientId = msg.clientId
