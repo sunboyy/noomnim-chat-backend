@@ -48,6 +48,26 @@ export function initSocket(http) {
                 socket.emit('message-ack', { error: e })
             }
         })
+
+        /**
+         * @event create-group
+         * @description group ceration request.
+         * @param msg (string) desired group name
+         */
+        socket.on('create-group', async (msg) => {
+            try {
+                let group = await getGroup(msg)
+                if (group) {
+                    socket.emit('create-group', { error: 'the group is already exist' })
+                } else {
+                    group = await insertGroup(msg)
+                    socket.emit('create-group', { data: group })
+                    socket.join('group/' + group.id);
+                }
+            } catch (e) {
+                socket.emit('create-group', { error: e })
+            }
+        })
     })
 }
 
