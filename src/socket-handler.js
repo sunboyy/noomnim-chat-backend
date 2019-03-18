@@ -49,9 +49,13 @@ export function initSocket(http) {
             }
         })
 
+        /**
+         * @event create-group
+         * @description group ceration request.
+         * @param msg (string) desired group name
+         */
         socket.on('create-group', async (msg) => {
             try {
-
                 let group = await getGroup(msg)
                 if (group) {
                     socket.emit('create-group', { error: 'the group is already exist' })
