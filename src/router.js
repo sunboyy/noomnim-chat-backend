@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getGroup, getAllGroup, insertGroup, leaveGroup, findGroup } from './models/group'
+import { findGroup } from './models/group'
 import { checkMembership } from './models/member'
 import { insertMessage } from './models/message'
 import { pushToGroup } from './socket-handler'
