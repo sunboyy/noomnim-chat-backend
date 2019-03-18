@@ -1,6 +1,7 @@
 import socketIO from 'socket.io'
 import { getClient, insertClient } from './models/client'
-import { getMembership, updateLastMessage } from './models/member'
+import { getMembership, updateLastMessage, getLastMessageId } from './models/member'
+import { getUnreadMessage } from './models/message'
 
 let io
 
@@ -67,6 +68,22 @@ export function initSocket(http) {
             } catch (e) {
                 socket.emit('create-group', { error: e })
             }
+        })
+        
+        /**
+         * @event get-unread
+         * @description Get unread message
+         * @param msg (object) in the format { clientId, groupId }
+         */
+        socket.on('get-unread', async (msg) => {
+            if (typeof msg == 'string') {
+                msg = JSON.parse(msg)
+            }
+            const lastMessageId = await getLastMessageId(msg.clientId, msg.groupId)
+            const messages = await getUnreadMessage(msg.groupId, lastMessageId)
+            messages.forEach(message => {
+                socket.emit('message', { data: message })
+            })
         })
     })
 }
