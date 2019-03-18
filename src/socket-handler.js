@@ -6,6 +6,7 @@ import {
     getLastMessageId,
     addMembership
 } from './models/member'
+import { leaveGroup } from './models/group'
 import { getUnreadMessage } from './models/message'
 
 let io
@@ -62,6 +63,23 @@ export function initSocket(http) {
             }
         })
 
+        /**
+         * @event leave-group
+         * @description leave group from client.
+         * @param msg {clientId:int, groupId:int}
+         */
+
+        socket.on('leave-group', async (msg) => {
+            try {
+                const clientId = msg.clientId
+                const groupId = msg.groupId
+                await leaveGroup(clientId,groupId)
+                socket.emit('leave-group',{ data: { clientId, groupId } })
+                socket.leave('group/' + groupId)
+            } catch (e){
+                socket.emit('leave-group', { error: e })
+            }
+        })
         /**
          * @event message-ack
          * @description Message acknowledgement event from client to update `member`.`last_msg_id`
