@@ -1,7 +1,9 @@
 import socketIO from 'socket.io'
 import { getClient, insertClient } from './models/client'
+import { getMembership, updateLastMessage, getLastMessageId } from './models/member'
 import { getMembership } from './models/member'
 import { leaveGroup } from './models/group'
+import { getUnreadMessage } from './models/message'
 
 let io
 
@@ -15,6 +17,11 @@ export function initSocket(http) {
             console.log('' + socket.id + ' [greet]: ' + msg + '')
         })
 
+        /**
+         * @event create-client
+         * @description Login request from client.
+         * @param msg (string) desired client name
+         */
         socket.on('create-client', async (msg) => {
             try {
                 let client = await getClient(msg)
@@ -45,6 +52,57 @@ export function initSocket(http) {
             } catch (e){
                 socket.emit('leave-group', { error: e })
             }
+        })
+        /**
+         * @event message-ack
+         * @description Message acknowledgement event from client to update `member`.`last_msg_id`
+         * @param msg (object) in the format { clientId, groupId, messageId }
+         */
+        socket.on('message-ack', async (msg) => {
+            if (typeof msg == 'string') {
+                msg = JSON.parse(msg)
+            }
+            try {
+                await updateLastMessage(msg.clientId, msg.groupId, msg.messageId)
+            } catch (e) {
+                socket.emit('message-ack', { error: e })
+            }
+        })
+
+        /**
+         * @event create-group
+         * @description group ceration request.
+         * @param msg (string) desired group name
+         */
+        socket.on('create-group', async (msg) => {
+            try {
+                let group = await getGroup(msg)
+                if (group) {
+                    socket.emit('create-group', { error: 'the group is already exist' })
+                } else {
+                    group = await insertGroup(msg)
+                    socket.emit('create-group', { data: group })
+                    socket.join('group/' + group.id);
+                }
+            } catch (e) {
+                socket.emit('create-group', { error: e })
+            }
+        })
+        
+        /**
+         * @event get-unread
+         * @description Get unread message
+         * @param msg (object) in the format { clientId, groupId }
+         */
+        socket.on('get-unread', async (msg) => {
+            if (typeof msg == 'string') {
+                msg = JSON.parse(msg)
+            }
+            const lastMessageId = await getLastMessageId(msg.clientId, msg.groupId)
+            const messages = await getUnreadMessage(msg.groupId, lastMessageId)
+            messages.forEach(message => {
+                socket.emit('message', { data: message })
+            })
         })
     })
 }
