@@ -69,6 +69,7 @@ export function initSocket(http) {
          * @description leave group from client.
          * @param msg {clientId:int, groupId:int}
          */
+
         socket.on('leave-group', async (msg) => {
             try {
                 const clientId = msg.clientId
@@ -80,7 +81,6 @@ export function initSocket(http) {
                 socket.emit('leave-group', { error: e })
             }
         })
-
         /**
          * @event message-ack
          * @description Message acknowledgement event from client to update `member`.`last_msg_id`
@@ -104,17 +104,19 @@ export function initSocket(http) {
         /**
          * @event create-group
          * @description group ceration request.
-         * @param msg (string) desired group name
+         * @param msg (object) in the format { name, clientId }
          */
         socket.on('create-group', async msg => {
             try {
-                let group = await getGroup(msg)
+                let group = await getGroup(msg.name)
+                let clientId = msg.clientId
                 if (group) {
                     socket.emit('create-group', {
                         error: 'the group is already exist'
                     })
                 } else {
-                    group = await insertGroup(msg)
+                    group = await insertGroup(msg.name)
+                    await addMembership(clientId, group.id)
                     socket.emit('create-group', { data: group })
                     socket.join('group/' + group.id)
                 }
