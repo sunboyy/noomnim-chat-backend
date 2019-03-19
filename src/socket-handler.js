@@ -4,9 +4,10 @@ import {
     getMembership,
     updateLastMessage,
     getLastMessageId,
-    addMembership
+    addMembership,
+    checkMembership
 } from './models/member'
-import { leaveGroup } from './models/group'
+import { leaveGroup, getGroup, insertGroup } from './models/group'
 import { getUnreadMessage } from './models/message'
 
 let io
