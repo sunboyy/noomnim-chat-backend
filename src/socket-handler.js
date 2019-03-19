@@ -6,7 +6,7 @@ import {
     getLastMessageId,
     addMembership
 } from './models/member'
-import { leaveGroup } from './models/group'
+import { leaveGroup, getGroup, insertGroup } from './models/group'
 import { getUnreadMessage } from './models/message'
 
 let io
