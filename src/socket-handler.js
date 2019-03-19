@@ -25,20 +25,28 @@ export function initSocket(http) {
         /**
          * @event join-group
          * @description Request join group
-         * @param msg (object) in the format {clientName, groupId}
+         * @param msg (object) in the format {clientName, groupName}
          */
         socket.on('join-group', async msg => {
+            const {clientName, groupName} = msg
             try {
-                const client = await getClient(msg.clientName)
+                const client = await getClient(clientName)
                 if (!client) {
                     return socket.emit('join-group', {
                         error: 'Create client first!'
                     })
                 }
-                if (!(await checkMembership(client.id, msg.groupId))) {
-                    await addMembership(client.id, msg.groupId)
+                const group = await getGroup(groupName)
+                if(!group) {
+                    return socket.emit('join-group', {
+                        error: 'No group found!'
+                    })
                 }
-                socket.join('group/' + msg.groupId)
+                if (!(await checkMembership(client.id, group.id))) {
+                    await addMembership(client.id, group.id)
+                    socket.emit('join-group', {data: {group}})
+                }
+                socket.join('group/' + group.id)
             } catch (e) {
                 console.error(e)
                 socket.emit('join-group', { error: e })
