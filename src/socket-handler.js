@@ -25,11 +25,11 @@ export function initSocket(http) {
         /**
          * @event join-group
          * @description Request join group
-         * @param msg (object) in the format {clientname, groupid}
+         * @param msg (object) in the format {clientName, groupId}
          */
         socket.on('join-group', async msg => {
             try {
-                const client = await getClient(msg.name)
+                const client = await getClient(msg.clientName)
                 if (!client) {
                     return socket.emit('join-group', {
                         error: 'Create client first!'
