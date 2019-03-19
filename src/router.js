@@ -16,6 +16,16 @@ router.get('/group', async (req, res) => {
     }
 })
 
+router.get('/user/group', async (req, res) => {
+    try {
+        const { clientId } = req.body
+        let groups = await getMembership(clientId)
+        res.json({ status: 1, data: groups })
+    } catch (e) {
+        res.json({ status: 0, error: e })
+    }
+})
+
 router.post('/message', async (req, res) => {
     try {
         const { content, clientId, groupId } = req.body
