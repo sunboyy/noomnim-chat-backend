@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { findGroup } from './models/group'
-import { checkMembership } from './models/member'
+import { checkMembership, getMembership } from './models/member'
 import { insertMessage } from './models/message'
 import { pushToGroup } from './socket-handler'
 
@@ -18,7 +18,7 @@ router.get('/group', async (req, res) => {
 
 router.get('/user/group', async (req, res) => {
     try {
-        const { clientId } = req.body
+        const { clientId } = req.query
         let groups = await getMembership(clientId)
         res.json({ status: 1, data: groups })
     } catch (e) {
