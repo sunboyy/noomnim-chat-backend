@@ -1,5 +1,5 @@
 import socketIO from 'socket.io'
-import { getClient, insertClient, getClientById } from './models/client'
+import { getClientById, getClientByName, insertClient } from './models/client'
 import {
     getMembership,
     updateLastMessage,
@@ -60,7 +60,7 @@ export function initSocket(http) {
          */
         socket.on('create-client', async msg => {
             try {
-                let client = await getClient(msg)
+                let client = await getClientByName(msg)
                 if (!client) {
                     client = await insertClient(msg)
                 }
@@ -146,7 +146,7 @@ export function initSocket(http) {
                 msg.clientId,
                 msg.groupId
             )
-            const messages = await getUnreadMessage(msg.groupId, lastMessageId)
+            const messages = await getUnreadMessage(msg.groupId, lastMessageId, ['posted_by'])
             messages.forEach(message => {
                 socket.emit('message', { data: message })
             })
