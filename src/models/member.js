@@ -34,7 +34,7 @@ export function addMembership(clientId, groupId) {
     return new Promise(async (resolve, reject) => {
         const conn = await getConnection()
         conn.query(
-            'INSERT INTO `member` (`client_id`,`group_id`,`last_msg_id` VALUES (?,?,NULL)',
+            'INSERT INTO `member` (`client_id`,`group_id`,`last_msg_id`) VALUES (?,?,NULL)',
             [clientId, groupId],
             (err, res) => {
                 if (err) reject('Cannot join group')
