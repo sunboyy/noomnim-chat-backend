@@ -4,7 +4,7 @@ export function getMembership(clientId) {
     return new Promise(async (resolve, reject) => {
         const conn = await getConnection()
         conn.query(
-            'SELECT `group`.`id`, `group`.`name` FROM `member` NATURAL JOIN `group` WHERE `member`.`client_id` = ?',
+            'SELECT `group`.`id`, `group`.`name` FROM `member` INNER JOIN `group` ON `group`.`id` = `member`.`group_id` WHERE `member`.`client_id` = ?',
             [clientId],
             (err, rows) => {
                 if (err) reject('Cannot get membership')
