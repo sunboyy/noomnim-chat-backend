@@ -1,5 +1,5 @@
 import socketIO from 'socket.io'
-import { getClient, insertClient } from './models/client'
+import { getClient, insertClient, getClientById } from './models/client'
 import {
     getMembership,
     updateLastMessage,
@@ -7,7 +7,7 @@ import {
     addMembership,
     checkMembership
 } from './models/member'
-import { leaveGroup, getGroup, insertGroup } from './models/group'
+import { leaveGroup, getGroup, insertGroup, getGroupById } from './models/group'
 import { getUnreadMessage } from './models/message'
 
 let io
@@ -25,18 +25,18 @@ export function initSocket(http) {
         /**
          * @event join-group
          * @description Request join group
-         * @param msg (object) in the format {clientName, groupName}
+         * @param msg (object) in the format {clientId, groupId}
          */
         socket.on('join-group', async msg => {
-            const {clientName, groupName} = msg
+            const {clientId, groupId} = msg
             try {
-                const client = await getClient(clientName)
+                const client = await getClientById(clientId)
                 if (!client) {
                     return socket.emit('join-group', {
                         error: 'Create client first!'
                     })
                 }
-                const group = await getGroup(groupName)
+                const group = await getGroupById(groupId)
                 if(!group) {
                     return socket.emit('join-group', {
                         error: 'No group found!'
