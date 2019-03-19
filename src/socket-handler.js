@@ -69,7 +69,6 @@ export function initSocket(http) {
          * @description leave group from client.
          * @param msg {clientId:int, groupId:int}
          */
-
         socket.on('leave-group', async (msg) => {
             try {
                 const clientId = msg.clientId
@@ -81,6 +80,7 @@ export function initSocket(http) {
                 socket.emit('leave-group', { error: e })
             }
         })
+
         /**
          * @event message-ack
          * @description Message acknowledgement event from client to update `member`.`last_msg_id`
