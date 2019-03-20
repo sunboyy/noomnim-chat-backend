@@ -28,7 +28,7 @@ export function initSocket(http) {
          * @param msg (object) in the format {clientId, groupId}
          */
         socket.on('join-group', async msg => {
-            const {clientId, groupId} = msg
+            const { clientId, groupId } = msg
             try {
                 const client = await getClientById(clientId)
                 if (!client) {
@@ -37,14 +37,14 @@ export function initSocket(http) {
                     })
                 }
                 const group = await getGroupById(groupId)
-                if(!group) {
+                if (!group) {
                     return socket.emit('join-group', {
                         error: 'No group found!'
                     })
                 }
                 if (!(await checkMembership(client.id, group.id))) {
                     await addMembership(client.id, group.id)
-                    socket.emit('join-group', {data: {group}})
+                    socket.emit('join-group', { data: { group } })
                 }
                 socket.join('group/' + group.id)
             } catch (e) {
@@ -82,10 +82,10 @@ export function initSocket(http) {
             try {
                 const clientId = msg.clientId
                 const groupId = msg.groupId
-                await leaveGroup(clientId,groupId)
-                socket.emit('leave-group',{ data: { clientId, groupId } })
+                await leaveGroup(clientId, groupId)
+                socket.emit('leave-group', { data: { clientId, groupId } })
                 socket.leave('group/' + groupId)
-            } catch (e){
+            } catch (e) {
                 socket.emit('leave-group', { error: e })
             }
         })
@@ -147,6 +147,20 @@ export function initSocket(http) {
                 msg.groupId
             )
             const messages = await getUnreadMessage(msg.groupId, lastMessageId, ['posted_by'])
+            if (messages.length > 0) {
+                socket.emit('message', {
+                    data: {
+                        id: messages[0].id - 0.5,
+                        time: messages[0].time,
+                        content: '<UNREAD_LINE>',
+                        posted_by: {
+                            id: 0,
+                            name: 'N/A'
+                        },
+                        group_id: msg.groupId
+                    }
+                })
+            }
             messages.forEach(message => {
                 socket.emit('message', { data: message })
             })
