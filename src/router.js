@@ -3,8 +3,13 @@ import { findGroup } from './models/group'
 import { checkMembership, getMembership } from './models/member'
 import { insertMessage } from './models/message'
 import { pushToGroup } from './socket-handler'
+import { port } from './config'
 
 const router = Router()
+
+router.get('/', (req, res) => {
+    res.send('Noomnim chat backend server running on port ' + port)
+})
 
 router.get('/group', async (req, res) => {
     try {
