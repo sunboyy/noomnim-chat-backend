@@ -9,3 +9,7 @@ export const db = {
     password: process.env.MYSQL_PASSWORD || '',
     database: process.env.MYSQL_DATABASE || 'noomnim_chat'
 }
+export const socketRedisAdapter = {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379
+}
