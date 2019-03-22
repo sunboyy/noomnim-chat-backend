@@ -1,4 +1,5 @@
 import socketIO from 'socket.io'
+import redis from 'socket.io-redis'
 import { getClientById, getClientByName, insertClient } from './models/client'
 import {
     getMembership,
@@ -9,11 +10,13 @@ import {
 } from './models/member'
 import { leaveGroup, getGroup, insertGroup, getGroupById } from './models/group'
 import { getUnreadMessage } from './models/message'
+import { socketRedisAdapter } from './config'
 
 let io
 
 export function initSocket(http) {
     io = socketIO(http)
+    io.adapter(redis(socketRedisAdapter))
     io.on('connection', socket => {
         socket.emit('greet', 'Hello, a new client!')
         console.log(socket.id + ': Connected')
