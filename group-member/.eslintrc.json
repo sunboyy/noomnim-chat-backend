@@ -1,0 +1,16 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+    },
+    "rules": {
+        "semi": ["warn", "never"],
+        "eol-last": ["warn", "always"],
+        "quotes": ["warn", "single"]
+    },
+    "overrides": [
+        {
+            "files": ["dist/*.js"]
+        }
+    ]
+}
