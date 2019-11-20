@@ -3,7 +3,7 @@ import { getGroupMembers } from './models/member'
 
 const router = Router()
 
-router.get('/group', async (req, res) => {
+router.get('/members', async (req, res) => {
     try {
         const { groupId } = req.query
         let member = await getGroupMembers(groupId)

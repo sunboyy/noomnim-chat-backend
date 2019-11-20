@@ -1,7 +1,7 @@
 {
-  "name": "noomnim-chat-backend",
+  "name": "noomnim-chat-group",
   "version": "1.0.0",
-  "description": "Backend part of Miniproject 1 of Parallel and Distributed System class",
+  "description": "Group Backend part of Miniproject 1 of Parallel and Distributed System class",
   "main": "app.js",
   "scripts": {
     "start": "babel-node src/app",
@@ -12,7 +12,8 @@
     "noomnim",
     "chat",
     "server",
-    "backend"
+    "backend",
+    "group-member"
   ],
   "author": "Blue Noomnim and friends",
   "license": "ISC",
@@ -24,12 +25,11 @@
     "nodemon": "^1.19.4"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.7.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "express": "^4.17.1",
-    "mysql": "^2.17.1",
-    "socket.io": "^2.3.0",
-    "socket.io-redis": "^5.2.0"
+    "mysql": "^2.17.1"
   }
 }
