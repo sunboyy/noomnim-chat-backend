@@ -4,12 +4,17 @@ admin:
   port: 9876
   host: localhost
 apiEndpoints:
+  group:
+    host: localhost
+    paths: '/api/group/*'
   back:
     host: localhost
     paths: '/api/*'
   front:
     host: localhost
 serviceEndpoints:
+  group-service:
+    url: 'http://localhost:3010'
   backend:
     url: 'http://localhost:3000'
   frontend: 
@@ -24,6 +29,16 @@ policies:
   - proxy
   - rate-limit
 pipelines:
+  groupApi:
+    apiEndpoints:
+      - group
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: group-service
+              prependPath: true
+              ignorePath: false
+              stripPath: true
   backApi:
     apiEndpoints:
       - back
