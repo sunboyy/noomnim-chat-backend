@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  gateway:
+    build: gateway
+    ports:
+    - 8080:8080
+    links:
+    - backend
+    - group
+    links:
+    - backend
+    - group
+
   backend:
     build: backend
     ports:
@@ -23,6 +34,11 @@ services:
     links:
     - db
 
+  frontend:
+    build: ../noomnim-chat-frontend
+    ports:
+    - 80:80
+
   db:
     image: mysql:5.7
     environment:
@@ -35,7 +51,7 @@ services:
     environment:
       PMA_HOST: db
     ports:
-    - 8080:80
+    - 8888:80
     links:
     - db
 

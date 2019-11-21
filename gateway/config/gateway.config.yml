@@ -13,11 +13,11 @@ apiEndpoints:
   front:
     host: localhost
 serviceEndpoints:
-  group-service:
-    url: 'http://localhost:3010'
   backend:
     url: 'http://localhost:3000'
-  frontend: 
+  group-service:
+    url: 'http://localhost:3010'
+  frontend:
     url: 'http://localhost:4200'
 policies:
   - basic-auth
@@ -46,7 +46,7 @@ pipelines:
     # Uncomment `key-auth:` when instructed to in the Getting Started guide.
     # - key-auth:
       - proxy:
-          - action: 
+          - action:
               serviceEndpoint: backend
               prependPath: true
               ignorePath: false
@@ -58,5 +58,5 @@ pipelines:
     # Uncomment `key-auth:` when instructed to in the Getting Started guide.
     # - key-auth:
       - proxy:
-          - action: 
+          - action:
               serviceEndpoint: frontend
