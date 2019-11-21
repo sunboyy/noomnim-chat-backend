@@ -4,6 +4,7 @@ WORKDIR /app
 RUN npm install && npm run build
 
 FROM node:12-alpine
+COPY --from=0 /app/public /app/public
 COPY --from=0 /app/dist /app/dist
 COPY --from=0 /app/package.json /app/package.json
 COPY --from=0 /app/package-lock.json /app/package-lock.json

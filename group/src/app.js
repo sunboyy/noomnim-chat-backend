@@ -20,3 +20,7 @@ const http = Server(app)
 http.listen(port, () => {
     console.log('Group member serive started at port ' + port)
 })
+
+process.on('SIGTERM', () => {
+    http.close()
+})

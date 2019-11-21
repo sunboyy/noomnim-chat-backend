@@ -19,7 +19,7 @@ const vm = new Vue({
         }
     }
 })
-const socket = io()
+const socket = io(undefined, { path: '/api/socket.io' })
 socket.on('connect', () => {
     vm.connected = true
 })

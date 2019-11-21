@@ -51,6 +51,7 @@ pipelines:
               prependPath: true
               ignorePath: false
               stripPath: true
+              ws: true
   frontApi:
     apiEndpoints:
       - front

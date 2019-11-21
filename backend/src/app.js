@@ -23,3 +23,7 @@ initSocket(http)
 http.listen(port, () => {
     console.log('Noomnim Chat Server started at port ' + port)
 })
+
+process.on('SIGTERM', () => {
+    http.close()
+})
