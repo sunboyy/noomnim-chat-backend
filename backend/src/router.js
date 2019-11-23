@@ -1,5 +1,5 @@
+// @ts-check
 import { Router } from 'express'
-import { findGroup } from './models/group'
 import { checkMembership, getMembership } from './models/member'
 import { insertMessage } from './models/message'
 import { pushToGroup } from './socket-handler'
@@ -9,16 +9,6 @@ const router = Router()
 
 router.get('/', (req, res) => {
     res.send('Noomnim chat backend server running on port ' + port)
-})
-
-router.get('/group', async (req, res) => {
-    try {
-        const { keys } = req.query
-        let group = await findGroup(keys)
-        res.json({ status: 1, data: group })
-    } catch (e) {
-        res.json({ status: 0, error: e })
-    }
 })
 
 router.get('/user/group', async (req, res) => {
