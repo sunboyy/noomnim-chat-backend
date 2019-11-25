@@ -5,13 +5,11 @@ admin:
   host: localhost
 apiEndpoints:
   group:
-    host: localhost
     paths: '/api/group/*'
   back:
-    host: localhost
     paths: '/api/*'
   front:
-    host: localhost
+    paths: '*'
 serviceEndpoints:
   backend:
     url: 'http://localhost:3000'
