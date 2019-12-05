@@ -6,7 +6,7 @@ export function getGroupMembers(groupId) {
         conn.query(
             'SELECT * FROM `client` \
             INNER JOIN `member`\
-            ON `client`.`id` = `member`.`group_id` \
+            ON `client`.`id` = `member`.`client_id` \
             WHERE `member`.`group_id` = ?',
             [groupId],
             (err, rows) => {
